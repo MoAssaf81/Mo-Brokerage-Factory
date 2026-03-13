@@ -1,0 +1,21 @@
+
+name: .NET CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore
+        run: dotnet restore backend/BrokerageFactory.sln
+      - name: Build
+        run: dotnet build backend/BrokerageFactory.sln --configuration Release --no-restore
+      - name: Test
+        run: dotnet test backend/BrokerageFactory.sln --configuration Release --no-build --verbosity minimal
